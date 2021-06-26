@@ -16,7 +16,7 @@ let corsOptions = {
     } else {
       callback(new Error('Not allowed by CORS'))
     }
-  }
+  },
 }
 
 // enable cors
@@ -30,13 +30,24 @@ app.use(
   })
 )
 
+// connect database and model later
+const db = require('./models')
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('database connected.')
+  })
+  .catch((err) => {
+    console.error(`database connection failed.`, err.message)
+  })
+
 // simple route
 app.get('/', (req, res) => {
-    res.json({ message: 'server running...' })
+  res.json({ message: 'server running...' })
 })
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8000
+const PORT = process.env.APP_PORT || 8000
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}.`)
 })
