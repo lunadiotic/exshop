@@ -15,4 +15,6 @@ module.exports = function (app) {
     [request.register.isUserExist],
     controller.register
   )
+
+  app.post('/api/auth/login', controller.login)
 }
