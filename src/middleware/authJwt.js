@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../config/auth.js')
 
 verifyToken = (req, res, next) => {
-  let token = req.headers['Authorization']
+  let token = req.headers['authorization']
 
   if (!token) {
     return res.status(403).send({
@@ -22,7 +22,7 @@ verifyToken = (req, res, next) => {
 }
 
 const authJwt = {
-  verifyToken: verifyToken,
+  verifyToken,
 }
 
 module.exports = authJwt
