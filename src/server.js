@@ -46,6 +46,9 @@ app.get('/', (req, res) => {
   res.json({ message: 'server running...' })
 })
 
+// Auth Route
+require('./routes/auth.route')(app)
+
 // set port, listen for requests
 const PORT = process.env.APP_PORT || 8000
 app.listen(PORT, () => {

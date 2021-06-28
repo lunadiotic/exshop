@@ -3,5 +3,7 @@ const RegisterRequest = require('./requests/register')
 
 module.exports = {
   authJwt,
-  RegisterRequest,
+  request: {
+    register: RegisterRequest,
+  },
 }
