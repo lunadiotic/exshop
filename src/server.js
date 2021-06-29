@@ -32,10 +32,13 @@ app.use(
 
 // connect database and model later
 const db = require('./models')
+const seed = require('./models/seeders')
 db.sequelize
-  .sync()
+  .sync({ force: true })
   .then(() => {
     console.log('database connected.')
+    seed.userSeed()
+    seed.categorySeed()
   })
   .catch((err) => {
     console.error(`database connection failed.`, err.message)
