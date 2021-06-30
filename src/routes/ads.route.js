@@ -10,5 +10,6 @@ module.exports = function (app) {
     next()
   })
 
+  app.get('/api/ads', [authJwt.verifyToken], controller.index)
   app.post('/api/ads', [authJwt.verifyToken], controller.create)
 }

@@ -1,6 +1,22 @@
 const db = require('../models')
 const Ads = db.ads
 
+exports.index = (req, res) => {
+  Ads.findAll({
+    where: {
+      user_id: req.userId,
+    },
+  })
+    .then((data) => {
+      res.send(data)
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || 'Some error occurred while retrieving ads.',
+      })
+    })
+}
+
 exports.create = (req, res) => {
   if (!req.body.title) {
     res.status(400).send({
@@ -32,8 +48,7 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || 'Some error occurred while creating the Tutorial.',
+        message: err.message || 'Some error occurred while creating the ads.',
       })
     })
 }
