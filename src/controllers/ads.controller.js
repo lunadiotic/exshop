@@ -95,3 +95,27 @@ exports.update = (req, res) => {
       })
     })
 }
+
+exports.delete = (req, res) => {
+  const id = req.params.id
+
+  Ads.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: 'Ads was deleted successfully!',
+        })
+      } else {
+        res.send({
+          message: `Cannot delete Tutorial with id=${id}.`,
+        })
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Could not delete Ads with id=' + id,
+      })
+    })
+}
