@@ -64,23 +64,37 @@ exports.show = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id
 
-  Ads.update(req.body, {
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: 'Ads was updated successfully.',
+  Ads.findByPk(id)
+    .then((data) => {
+      if (data.user_id === req.userId) {
+        Ads.update(req.body, {
+          where: { id: id },
         })
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: 'Ads was updated successfully.',
+              })
+            } else {
+              res.send({
+                message: `Cannot update ads with id=${id}.`,
+              })
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: 'Error updating Ads with id=' + id,
+            })
+          })
       } else {
-        res.send({
-          message: `Cannot update ads with id=${id}.`,
+        res.status(401).send({
+          message: 'Ads data is not authorized',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Error updating Ads with id=' + id,
+        message: 'Error retrieving Ads with id=' + id,
       })
     })
 }
@@ -88,23 +102,37 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id
 
-  Ads.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: 'Ads was deleted successfully!',
+  Ads.findByPk(id)
+    .then((data) => {
+      if (data.user_id === req.userId) {
+        Ads.destroy({
+          where: { id: id },
         })
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: 'Ads was deleted successfully!',
+              })
+            } else {
+              res.send({
+                message: `Cannot delete Tutorial with id=${id}.`,
+              })
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: 'Could not delete Ads with id=' + id,
+            })
+          })
       } else {
-        res.send({
-          message: `Cannot delete Tutorial with id=${id}.`,
+        res.status(401).send({
+          message: 'Ads data is not authorized',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not delete Ads with id=' + id,
+        message: 'Error retrieving Ads with id=' + id,
       })
     })
 }
