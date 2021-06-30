@@ -71,3 +71,27 @@ exports.show = (req, res) => {
       })
     })
 }
+
+exports.update = (req, res) => {
+  const id = req.params.id
+
+  Ads.update(req.body, {
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: 'Ads was updated successfully.',
+        })
+      } else {
+        res.send({
+          message: `Cannot update ads with id=${id}.`,
+        })
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Error updating Ads with id=' + id,
+      })
+    })
+}
