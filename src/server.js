@@ -34,11 +34,12 @@ app.use(
 const db = require('./models')
 const seed = require('./models/seeders')
 db.sequelize
-  .sync({ force: true })
+  // .sync({ force: true })
+  .sync()
   .then(() => {
     console.log('database connected.')
-    seed.userSeed()
-    seed.categorySeed()
+    // seed.userSeed()
+    // seed.categorySeed()
   })
   .catch((err) => {
     console.error(`database connection failed.`, err.message)
@@ -52,6 +53,7 @@ app.get('/', (req, res) => {
 // Auth Route
 require('./routes/auth.route')(app)
 require('./routes/profile.route')(app)
+require('./routes/ads.route')(app)
 
 // set port, listen for requests
 const PORT = process.env.APP_PORT || 8000
