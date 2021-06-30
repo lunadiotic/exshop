@@ -52,3 +52,22 @@ exports.create = (req, res) => {
       })
     })
 }
+
+exports.show = (req, res) => {
+  const id = req.params.id
+
+  Ads.findByPk(id)
+    .then((data) => {
+      if (data.user_id === req.userId) {
+        res.send(data)
+      }
+      res.status(401).send({
+        message: 'Ads data is not authorized',
+      })
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Error retrieving Ads with id=' + id,
+      })
+    })
+}
