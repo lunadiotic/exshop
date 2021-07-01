@@ -41,11 +41,11 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.TEXT,
       allowNull: false,
     },
-    location_lat: {
+    loc_latitude: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    location_long: {
+    loc_longitude: {
       type: Sequelize.STRING,
       allowNull: false,
     },
