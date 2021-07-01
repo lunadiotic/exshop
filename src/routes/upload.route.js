@@ -10,5 +10,6 @@ module.exports = function (app) {
     next()
   })
 
-  app.post('/api/ads/:id/upload', [authJwt.verifyToken], controller.upload)
+  app.post('/api/image/:id', [authJwt.verifyToken], controller.upload)
+  app.delete('/api/image/:id', [authJwt.verifyToken], controller.remove)
 }

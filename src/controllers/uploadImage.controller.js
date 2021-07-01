@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+const __basedir = path.resolve()
 const uploadImage = require('../middleware/uploadImage')
 const db = require('../models')
 const Image = db.image
@@ -33,4 +36,44 @@ exports.upload = async (req, res) => {
     console.log(error)
     return res.send(`Error when trying upload images: ${error}`)
   }
+}
+
+exports.remove = (req, res) => {
+  const id = req.params.id
+  Image.findByPk(id)
+    .then((data) => {
+      fs.unlink(
+        __basedir + `/storage/upload/${data.url_image}`,
+        function (err) {
+          if (err)
+            throw res.status(500).send({
+              message: 'Delete image failed!',
+            })
+          Image.destroy({
+            where: { id: id },
+          })
+            .then((num) => {
+              if (num == 1) {
+                res.send({
+                  message: 'Image was deleted successfully!',
+                })
+              } else {
+                res.send({
+                  message: `Cannot delete Tutorial with id=${id}.`,
+                })
+              }
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message: 'Could not delete Ads with id=' + id,
+              })
+            })
+        }
+      )
+    })
+    .catch((err) => {
+      res.status(404).send({
+        message: 'Could not find image with id=' + id,
+      })
+    })
 }
