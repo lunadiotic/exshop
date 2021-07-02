@@ -1,6 +1,8 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const path = require('path')
+const __basedir = path.resolve()
 const app = express()
 
 // enabling dotenv
@@ -44,6 +46,9 @@ db.sequelize
   .catch((err) => {
     console.error(`database connection failed.`, err.message)
   })
+
+app.use(express.static('storage'))
+app.use('/img', express.static(__basedir + '/storage/upload'))
 
 // simple route
 app.get('/', (req, res) => {
