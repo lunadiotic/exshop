@@ -24,6 +24,7 @@ exports.search = (req, res) => {
     },
     order: db.sequelize.col('distance'),
     limit: 10,
+    include: db.image,
   }).then(function (instance) {
     return res.json(200, instance)
   })
@@ -31,7 +32,9 @@ exports.search = (req, res) => {
 
 exports.detail = (req, res) => {
   id = req.params.id
-  Ads.findByPk(id)
+  Ads.findByPk(id, {
+    include: db.image,
+  })
     .then((data) => {
       res.status(200).send(data)
     })
@@ -49,6 +52,7 @@ exports.random = (req, res) => {
     },
     order: db.sequelize.literal('rand()'),
     limit: 10,
+    include: db.image,
   })
     .then((result) => {
       return res.json(200, result)
