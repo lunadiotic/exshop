@@ -25,3 +25,16 @@ exports.search = (req, res) => {
     return res.json(200, instance)
   })
 }
+
+exports.detail = (req, res) => {
+  id = req.params.id
+  Ads.findByPk(id)
+    .then((data) => {
+      res.status(200).send(data)
+    })
+    .catch((err) => {
+      res.status(404).send({
+        message: 'Error retrieving Ads with id=' + id,
+      })
+    })
+}
