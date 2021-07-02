@@ -19,6 +19,9 @@ exports.search = (req, res) => {
         ],
       ],
     },
+    where: {
+      sold: false,
+    },
     order: db.sequelize.col('distance'),
     limit: 10,
   }).then(function (instance) {
