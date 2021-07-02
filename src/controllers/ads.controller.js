@@ -1,14 +1,21 @@
 const db = require('../models')
 const Ads = db.ads
+const { getPagination, getPagingData } = require('../services/pagination')
 
 exports.index = (req, res) => {
-  Ads.findAll({
+  const { page, size } = req.query
+  const { limit, offset } = getPagination(page, size)
+
+  Ads.findAndCountAll({
     where: {
       user_id: req.userId,
     },
+    limit,
+    offset,
   })
     .then((data) => {
-      res.send(data)
+      const response = getPagingData(data, page, limit)
+      res.send(response)
     })
     .catch((err) => {
       res.status(500).send({
