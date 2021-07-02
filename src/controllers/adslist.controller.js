@@ -41,3 +41,21 @@ exports.detail = (req, res) => {
       })
     })
 }
+
+exports.random = (req, res) => {
+  Ads.findAll({
+    where: {
+      sold: false,
+    },
+    order: db.sequelize.literal('rand()'),
+    limit: 10,
+  })
+    .then((result) => {
+      return res.json(200, result)
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Something wrong...',
+      })
+    })
+}
