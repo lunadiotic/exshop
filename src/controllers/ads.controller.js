@@ -13,8 +13,8 @@ exports.index = (req, res) => {
     limit,
     offset,
   })
-    .then((data) => {
-      const response = getPagingData(data, page, limit)
+    .then((result) => {
+      const response = getPagingData(result, page, limit)
       res.send(response)
     })
     .catch((err) => {
