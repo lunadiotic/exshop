@@ -1,11 +1,16 @@
 const db = require('../models')
 const Ads = db.ads
+const { getPagination, getPagingData } = require('../services/pagination')
+const Op = db.Sequelize.Op
 
 exports.search = (req, res) => {
   const lat = parseFloat(req.query.lat)
   const lng = parseFloat(req.query.lng)
+  const { page, size, title } = req.query
+  let condition = title ? { title: { [Op.like]: `%${title}%` } } : null
+  const { limit, offset } = getPagination(page, size)
 
-  Ads.findAll({
+  Ads.findAndCountAll({
     attributes: {
       include: [
         [
@@ -21,12 +26,15 @@ exports.search = (req, res) => {
     },
     where: {
       sold: false,
+      ...condition,
     },
+    limit,
+    offset,
     order: db.sequelize.col('distance'),
-    limit: 10,
     include: db.image,
-  }).then(function (instance) {
-    return res.json(200, instance)
+  }).then(function (result) {
+    const response = getPagingData(result, page, limit)
+    res.send(response)
   })
 }
 

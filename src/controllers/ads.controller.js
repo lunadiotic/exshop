@@ -3,12 +3,14 @@ const Ads = db.ads
 const { getPagination, getPagingData } = require('../services/pagination')
 
 exports.index = (req, res) => {
-  const { page, size } = req.query
+  const { page, size, title } = req.query
+  let condition = title ? { title: { [Op.like]: `%${title}%` } } : null
   const { limit, offset } = getPagination(page, size)
 
   Ads.findAndCountAll({
     where: {
       user_id: req.userId,
+      ...condition,
     },
     limit,
     offset,
